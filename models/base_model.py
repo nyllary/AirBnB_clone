@@ -3,7 +3,6 @@
 for other classes"""
 import uuid
 import json
-import models
 from datetime import datetime
 
 
@@ -15,6 +14,7 @@ class BaseModel:
         Args:
             None
         """
+        import models
         if kwargs:
             for key, value in kwargs.items():
                 if key == '__class__':
