@@ -3,6 +3,7 @@
 for other classes"""
 import uuid
 import json
+import models
 from datetime import datetime
 
 
