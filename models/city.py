@@ -7,3 +7,7 @@ class City(BaseModel):
     """This houses the information on the city"""
     state_id = ""
     name = ""
+
+    def __init__(self, *args, **kwargs):
+        """This is the constructor method"""
+        super().__init__(*args, **kwargs)
