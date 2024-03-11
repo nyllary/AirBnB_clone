@@ -5,7 +5,6 @@ import json
 import os
 
 
-
 class FileStorage:
     __file_path = "file.json"
     __objects = {}
@@ -31,10 +30,20 @@ class FileStorage:
             None
         Returns:
             None"""
+        from models.base_model import BaseModel
+        from models.user import User
+        from models.place import Place
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.review import Review
         total_objs = self.__objects
         local_dict = {}
         for obj_key, obj_instance in total_objs.items():
-            local_dict[obj_key] = obj_instance.to_dict()
+            if isinstance(obj_instance,
+                          (BaseModel, User, Place, City, Amenity,
+                           State, Review)):
+                local_dict[obj_key] = obj_instance.to_dict()
         with open(self.__file_path, 'w', encoding="utf-8") as the_file:
             json.dump(local_dict, the_file)
 
@@ -46,6 +55,12 @@ class FileStorage:
         Returns:
             None"""
         from models.base_model import BaseModel
+        from models.user import User
+        from models.place import Place
+        from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.review import Review
         if os.path.exists(self.__file_path):
             with open(self.__file_path, 'r', encoding="utf-8") as the_file:
                 local_dict = json.load(the_file)

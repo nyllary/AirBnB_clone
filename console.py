@@ -3,6 +3,12 @@
 airbnb clone project"""
 import cmd
 from models.base_model import BaseModel
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 from models import storage
 
 
@@ -42,12 +48,19 @@ class HBNBCommand(cmd.Cmd):
         """Creates new instance of BaseModel, saves it to JSON
         prints id"""
         arguments = line.split()
+        cls_names = ['BaseModel', 'User', 'Place', 'City',
+                     'Amenity', 'State', 'Review']
         if not arguments:
             print('** class name missing **')
-        elif arguments[0] != 'BaseModel':
+            return
+        elif arguments[0] not in cls_names or not self.class_exists\
+             (arguments[0]):
             print('** class doesn\'t exist **')
-        else:
-            instance = BaseModel()
+            return
+        cls_name = arguments[0]
+        if cls_name in globals() and isinstance(globals()[cls_name], type):
+            the_class = globals()[cls_name]
+            instance = the_class()
             instance.save()
             print(instance.id)
 
@@ -57,10 +70,13 @@ class HBNBCommand(cmd.Cmd):
         arguments = line.split()
         if not arguments:
             print('** class name missing **')
+            return
         elif not self.class_exists(arguments[0]):
             print('** class doesn\'t exist **')
+            return
         elif len(arguments) < 2:
             print('** instance id missing **')
+            return
         else:
             storage.reload()
             obj_dict = storage.all()
@@ -75,10 +91,13 @@ class HBNBCommand(cmd.Cmd):
         arguments = line.split()
         if not arguments:
             print('** class name missing **')
+            return
         elif not self.class_exists(arguments[0]):
             print('** class doesn\'t exist **')
+            return
         elif len(arguments) < 2:
             print('** instance id missing **')
+            return
         else:
             storage.reload()
             obj_dict = storage.all()
@@ -92,24 +111,33 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, line):
         """Prints all string representation of all instances"""
         arguments = line.split()
-        if not arguments or arguments[0] == 'BaseModel':
-            storage.reload()
+        cls_names = ['BaseModel', 'User', 'Place', 'City',
+                     'Amenity', 'State', 'Review']
+        storage.reload()
+        if not arguments:
             instances = storage.all().values()
-            local_list = [str(instance) for instance in instances]
-            print(local_list)
-        elif not self.class_exists(arguments[0]):
+        elif arguments[0] in cls_names and self.class_exists(arguments[0]):
+            cls_name = arguments[0]
+            instances = [obj for obj in storage.all().values()
+                         if obj.__class__.__name__ == cls_name]
+        else:
             print('** class doesn\'t exist **')
+            return
+        local_list = [str(instance) for instance in instances]
+        print(local_list)
 
     def do_update(self, line):
         """Updates instance based on the class name and id
         by adding or updating attribute"""
         from ast import literal_eval
         arguments = line.split()
+        cls_names = ['BaseModel', 'User', 'Place', 'City',
+                     'Amenity', 'State', 'Review']
         if not arguments:
             print('** class name missing **')
             return
         cls_name = arguments[0]
-        if cls_name != 'BaseModel':
+        if cls_name not in cls_names or self.class_exists(cls_name):
             print('** class doesn\'t exist **')
             return
         if len(arguments) < 2:
