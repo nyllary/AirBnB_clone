@@ -137,7 +137,7 @@ class HBNBCommand(cmd.Cmd):
             print('** class name missing **')
             return
         cls_name = arguments[0]
-        if cls_name not in cls_names or self.class_exists(cls_name):
+        if cls_name not in cls_names and not self.class_exists(cls_name):
             print('** class doesn\'t exist **')
             return
         if len(arguments) < 2:
