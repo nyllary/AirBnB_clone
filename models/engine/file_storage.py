@@ -3,7 +3,7 @@
 deserializes JSON file to instances"""
 import json
 import os
-from models.base_model import BaseModel
+
 
 
 class FileStorage:
@@ -45,6 +45,7 @@ class FileStorage:
             None
         Returns:
             None"""
+        from models.base_model import BaseModel
         if os.path.exists(self.__file_path):
             with open(self.__file_path, 'r', encoding="utf-8") as the_file:
                 local_dict = json.load(the_file)
