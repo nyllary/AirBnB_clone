@@ -4,6 +4,7 @@ deserializes JSON file to instances"""
 import json
 import os
 from models.base_model import BaseModel
+from models.user import User
 
 
 class FileStorage:
@@ -51,6 +52,7 @@ class FileStorage:
                 for key, value in local_dict.items():
                     class_name, obj_id = key.split('.')
                     cls = eval(class_name)
+                    class_obj = BaseModel if class_name == 'BaseModel' else User
                     instance = cls(**value)
                     self.__objects[key] = instance
         else:
