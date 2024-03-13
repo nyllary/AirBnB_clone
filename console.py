@@ -12,6 +12,7 @@ from models.review import Review
 from models import storage
 from models.user import User
 
+
 class HBNBCommand(cmd.Cmd):
     """The CLI class definition"""
     prompt = '(hbnb) '
@@ -53,8 +54,8 @@ class HBNBCommand(cmd.Cmd):
         if not arguments:
             print('** class name missing **')
             return
-        elif arguments[0] not in cls_names or not self.class_exists\
-             (arguments[0]):
+        elif arguments[0] not in cls_names or not self.class_exists(
+                arguments[0]):
             print('** class doesn\'t exist **')
             return
         cls_name = arguments[0]
